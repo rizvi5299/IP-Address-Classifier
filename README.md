@@ -13,18 +13,4 @@ This tool is ideal for students, network engineers, and developers who want to v
 - Converts IP addresses into numeric (decimal) representation.
 - Outputs results as an organized Pandas Dataframe.
 
-## Requirements  
-- Python 3.7 or higher  
-- Pandas library  
-
-## Installation  
-1. Clone this repository:  
-   ```bash
-   git clone https://github.com/rizvi5299/IP-Address-Classifier.git
-   cd IP-Address-Classifier
-2. Run the program with:
-   ```bash
-   python IP_Analyzer.py
-## Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests.
    
