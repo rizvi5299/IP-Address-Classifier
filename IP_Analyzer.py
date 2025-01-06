@@ -2,8 +2,8 @@ import pandas as pd
 import json
 
 def main():
-    # Load IPs from JSON file
-    with open('ipaddresses.json', 'r') as file:
+
+    with open('ipaddresses.json', 'r') as file: # load the json file here
         data = json.load(file)
         ips = data['IPs']
 
@@ -16,7 +16,7 @@ def main():
     df['Default Mask (Subnet Mask)'] = df['IP Address'].apply(subnetmask)
     df['Numeric Representation (Decimal)'] = df['IP Address'].apply(todecimal)
 
-    # Define the multi-level column header
+    # defining the multi-level column header
     header = pd.MultiIndex.from_tuples([
         ('IP Address', '', ''),
         ('      Class', '',''),
@@ -26,17 +26,17 @@ def main():
         ('  Numeric Representation', '(Decimal)','')
     ])
 
-    # Update the DataFrame to use the multi-level column header
+    # update the df to use the multi-level column header
     df.columns = header
 
-    # Adjust display options
+    # adjusting display options
     pd.set_option('display.max_columns', None)
     pd.set_option('display.expand_frame_repr', False)
 
     print(df.to_string(index=False))
 
 
-def ipclass(ip):
+def ipclass(ip): # get the class of the address
     try:
         parts = ip.split('.')
         first_octet = int(parts[0])
