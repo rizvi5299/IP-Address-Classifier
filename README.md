@@ -1,7 +1,7 @@
 # IP Address Analyzer  
 
 ## Description  
-A Python program that analyzes IP addresses to determine their class, validity, RFC 1918 compliance, default subnet mask, and numeric representation. It reads IPs from a JSON file and outputs results in a Pandas DataFrame for easy analysis.  
+A Python program that analyzes IP addresses to determine their class, validity, RFC 1918 compliance, default subnet mask, and numeric representation. It reads IPs from a JSON file and outputs results in a Pandas DataFrame for easy analysis. It also includes a menu feature which allows the user to sort the dataframe by class, validity, RFC 1918, subnet mask and numeric representation. This program is also uses ANSII escape color codes to make reading the program output easier.  
 
 This tool is ideal for students, network engineers, and developers who want to validate or understand IP addressing concepts. Feel free to clone this repo and add your own IP addresses to the JSON file that you would like to analyze.
 
