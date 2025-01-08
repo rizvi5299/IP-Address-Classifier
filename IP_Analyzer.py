@@ -22,9 +22,6 @@ def main():  #this function creates the DF, applying all functions to the IP's
     df['RFC 1918 (Y/N)'] = df['IP Address'].apply(rfc1918)
     df['Default Mask (Subnet Mask)'] = df['IP Address'].apply(subnetmask)
     df['Numeric Representation (Decimal)'] = df['IP Address'].apply(todecimal)
-
-    
-
     
     # defining the multi-level column header
     header = pd.MultiIndex.from_tuples([
@@ -35,8 +32,6 @@ def main():  #this function creates the DF, applying all functions to the IP's
         ('      Default Mask', '(Subnet Mask)',''),
         ('  Numeric Representation', '(Decimal)','')
     ])
-
-    
 
     # update the df to use the multi-level column header
     df.columns = header
@@ -50,8 +45,6 @@ def main():  #this function creates the DF, applying all functions to the IP's
     print(EFFECTS['Bold'] + EFFECTS['Green'] + '\nIP\'s Analyzed:\n\n' + EFFECTS['RESET'] + finaldf)
     menu(df)
     
-
-
         
 def menu(df):
     while True:
