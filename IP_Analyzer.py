@@ -32,8 +32,18 @@ def main():
     # adjusting display options
     pd.set_option('display.max_columns', None)
     pd.set_option('display.expand_frame_repr', False)
+    
+    finaldf = df.to_string(index=False)
 
-    print(df.to_string(index=False))
+    print(finaldf)
+    
+    
+def menu(df): #adding menu option for options to sort the df
+    pass
+    
+    
+    
+    
 
 
 def ipclass(ip): # get the class of the address
