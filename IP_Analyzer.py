@@ -1,7 +1,14 @@
 import pandas as pd
 import json
 
-def main():
+EFFECTS = {
+        "Green": "\033[32m",
+        "Blue": "\033[34m",
+        "RESET": "\033[0m",
+        "Bold": "\033[1m",
+    }
+
+def main():  #this function creates the DF, applying all functions to the IP's
 
     with open('ipaddresses.json', 'r') as file: # load the json file here
         data = json.load(file)
@@ -16,6 +23,9 @@ def main():
     df['Default Mask (Subnet Mask)'] = df['IP Address'].apply(subnetmask)
     df['Numeric Representation (Decimal)'] = df['IP Address'].apply(todecimal)
 
+    
+
+    
     # defining the multi-level column header
     header = pd.MultiIndex.from_tuples([
         ('IP Address', '', ''),
@@ -26,6 +36,8 @@ def main():
         ('  Numeric Representation', '(Decimal)','')
     ])
 
+    
+
     # update the df to use the multi-level column header
     df.columns = header
 
@@ -35,16 +47,58 @@ def main():
     
     finaldf = df.to_string(index=False)
 
-    print(finaldf)
-    
-    
-def menu(df): #adding menu option for options to sort the df
-    pass
-    
-    
-    
+    print(EFFECTS['Bold'] + EFFECTS['Green'] + '\nIP\'s Analyzed:\n\n' + EFFECTS['RESET'] + finaldf)
+    menu(df)
     
 
+
+        
+def menu(df):
+    while True:
+        print(EFFECTS['Bold'] + EFFECTS['Blue'] + "\nMenu: Sort the Addresses" + EFFECTS['RESET'])
+        print("1. Sort by Class")
+        print("2. Sort by Valid (Y/N)")
+        print("3. Sort by RFC 1918 (Y/N)")
+        print("4. Sort by Default Mask (Subnet Mask)")
+        print("5. Sort by Numeric Representation (Decimal)")
+        print("6. Exit")
+        
+        choice = input("Enter your choice (1-6): ")
+        
+        if choice == '1':
+            df_sorted = df.sort_values(('      Class', '', ''), ascending=True)
+            print(EFFECTS['Bold'] + EFFECTS['Green'] + "\nAddresses sorted by Class:\n" + EFFECTS['RESET'])
+            print(df_sorted.to_string(index=False))
+        elif choice == '2':
+            df_sorted = df.sort_values(('  Valid', '(Y/N)', ''), ascending=True)
+            print(EFFECTS['Bold'] + EFFECTS['Green'] + "\nAddresses sorted by Validity:\n"  + EFFECTS['RESET'])
+            print(df_sorted.to_string(index=False))
+        elif choice == '3':
+            df_sorted = df.sort_values(('  RFC 1918', '(Y/N)', ''), ascending=True)
+            print(EFFECTS['Bold'] + EFFECTS['Green'] + "\nAddresses sorted by RFC 1918:\n"  + EFFECTS['RESET'])
+            print(df_sorted.to_string(index=False))
+        elif choice == '4':
+            df_sorted = df.sort_values(('      Default Mask', '(Subnet Mask)', ''), ascending=True)
+            print(EFFECTS['Bold'] + EFFECTS['Green'] + "\nAddresses sorted by Default Mask (Subnet Mask):\n"  + EFFECTS['RESET'])
+            print(df_sorted.to_string(index=False))
+        elif choice == '5':
+            df_sorted = df.iloc[df['  Numeric Representation', '(Decimal)'].apply(custom_sort).argsort()].reset_index(drop=True)
+            print(EFFECTS['Bold'] + EFFECTS['Green'] + "\nAddresses sorted by Numeric Decimal Representation:\n"  + EFFECTS['RESET'])
+            print(df_sorted.to_string(index=False))
+        elif choice == '6':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 6.")
+
+ 
+    
+def custom_sort(value): #this is for sorting the numeric representation column
+    if isinstance(value, str):
+        return (0, value)  # Strings come first
+    else:
+        return (1, value)  # Integers come second
+    
 
 def ipclass(ip): # get the class of the address
     try:
@@ -66,6 +120,22 @@ def ipclass(ip): # get the class of the address
             return 'Special'
     except (ValueError, IndexError):
         return 'N/A'
+    
+
+def isvalid(ip):  #checks if it has four octets, each within 0-255.
+    try:
+        octets = list(map(int, ip.split('.')))
+    except ValueError:
+        return 'N'
+
+    if len(octets) != 4:
+        return 'N'
+
+    for octet in octets:
+        if octet < 0 or octet > 255:
+            return 'N'
+
+    return 'Y'
 
 def rfc1918(ip): #checks for rfc 1918
     try:
@@ -84,22 +154,6 @@ def rfc1918(ip): #checks for rfc 1918
             return 'N'
     elif first == 192:
         if not (second == 168 and third >= 0 and third <= 255 and fourth >= 0 and fourth <= 255):
-            return 'N'
-
-    return 'Y'
-
-
-def isvalid(ip):  #checks if it has four octets, each within 0-255.
-    try:
-        octets = list(map(int, ip.split('.')))
-    except ValueError:
-        return 'N'
-
-    if len(octets) != 4:
-        return 'N'
-
-    for octet in octets:
-        if octet < 0 or octet > 255:
             return 'N'
 
     return 'Y'
